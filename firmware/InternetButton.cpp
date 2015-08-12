@@ -204,21 +204,94 @@ uint8_t InternetButton::lowestLed(){
     return ledPos;
 }
 
+void InternetButton::playSong(String song){
+    char inputStr[200];
+    song.toCharArray(inputStr,200);
+    
+    Serial.println(inputStr);
+    
+    char *note = strtok(inputStr,",");
+    char *duration = strtok(NULL,",");
+    playNote(note,atoi(duration));
+    
+    while(duration != NULL){
+        note = strtok(NULL,",");
+        Serial.println(note);
+        duration = strtok(NULL,", \n");
+        Serial.println(duration);
+        //if(atoi(duration) <= 0){
+        //    break;
+        //}
+        playNote(note,atoi(duration));
+    }
+}
+
+void InternetButton::playNote(String note, int duration){
+    int noteNum = 0;
+    int octave = 5;
+    int freq = 256;
+    
+     //if(9 - int(command.charAt(1)) != null){
+        octave = atoi(note.substring(1,2));
+    //}
+    
+    if(duration != 0){
+        duration = 1000/duration;
+    }
+    
+    switch(note.charAt(0)){
+        case 'C':
+            noteNum = 0;
+            break;
+        case 'D':
+            noteNum = 2;
+            break;
+        case 'E':
+            noteNum = 4;
+            break;
+        case 'F':
+            noteNum = 5;
+            break;
+        case 'G':
+            noteNum = 7;
+            break;
+        case 'A':
+            noteNum = 9;
+            break;
+        case 'B':
+            noteNum = 11;
+            break;
+        case 'R':          // Rest note
+            octave = -1;
+            break;
+        default:
+            break;
+            //return -1;
+    }
+    
+    // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
+    // fn = f0*(2^1/12)^n where n = number of half-steps from the reference frequency f0
+    freq = float(256*pow(1.05946,(     12.0*(octave-4)        +noteNum)));
+    //          C4^  (2^1/12)^    12 half-steps in an octave      ^how many extra half-steps within that octave, 0 for a C
+    
+    tone(D0,int(freq),duration);
+    delay(duration);
+    noTone(D0);
+    //return freq;
+}
+
 /*
  Arduino Library for Analog Devices ADXL362 - Micropower 3-axis accelerometer
  go to http://www.analog.com/ADXL362 for datasheet
-
  License: CC BY-SA 3.0: Creative Commons Share-alike 3.0. Feel free
  to use and abuse this code however you'd like. If you find it useful
  please attribute, and SHARE-ALIKE!
-
  Created June 2012
  by Anne Mahaffey - hosted on http://annem.github.com/ADXL362
  Modified Mars 2014
  by pixelk
  Modified for Spark Core/Button October 2014
  by jenesaisdiq
-
  */
 
 
@@ -586,15 +659,12 @@ void ADXL362::SPIwriteTwoRegisters(uint8_t regAddress, int twoRegValue){
   LED devices such as Adafruit NeoPixel strips.
   Currently handles 800 KHz and 400kHz bitstream on Spark Core,
   WS2812, WS2812B and WS2811.
-
   Also supports Radio Shack Tri-Color Strip with TM1803 controller
   400kHz bitstream.
-
   Written by Phil Burgess / Paint Your Dragon for Adafruit Industries.
   Modified to work with Spark Core by Technobly.
   Modified to work with Spark Button by jenesaisdiq.
   Contributions by PJRC and other members of the open source community.
-
   Adafruit invests time and resources providing this open source code,
   please support Adafruit and open-source hardware by purchasing products
   from Adafruit!
@@ -603,17 +673,14 @@ void ADXL362::SPIwriteTwoRegisters(uint8_t regAddress, int twoRegValue){
 /* ======================= Adafruit_NeoPixel.cpp ======================= */
 /*-------------------------------------------------------------------------
   This file is part of the Adafruit NeoPixel library.
-
   NeoPixel is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of
   the License, or (at your option) any later version.
-
   NeoPixel is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
-
   You should have received a copy of the GNU Lesser General Public
   License along with NeoPixel.  If not, see
   <http://www.gnu.org/licenses/>.

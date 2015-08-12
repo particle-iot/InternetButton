@@ -38,6 +38,8 @@ class InternetButton {
     ledOn(uint8_t i, uint8_t r, uint8_t g, uint8_t b),
     ledOff(uint8_t i),
     rainbow(uint8_t wait),
+    playNote(String note, int duration),
+    playSong(String song),
     smoothLedOn(float i, uint8_t r, uint8_t g, uint8_t b);
   uint8_t
     buttonOn(uint8_t i),

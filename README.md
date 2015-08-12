@@ -9,6 +9,8 @@ _The Internet Button has a lot of features, but some of these aren't as straight
 5. __Motion__ - The Internet Button also has an accelerometer on it to measure motion- this shows how the related functions work
 6. __Orientation__ - How to use the accelerometer functions to determine the orientation
 7. __Internet__ - Send that data out to the world!
+8. __Making Music__ - Learn how to play notes and songs with your Button
+9. __Release Firmware__ - Big, complicated set of epic.
 
 
 _Watch for gauge and other display additions to this library!_
