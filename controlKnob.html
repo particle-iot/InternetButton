@@ -52,7 +52,7 @@
             //Call the Spark.function!
             var sendApiRequest = function (v) {
                 console.log('setting lamp to ' + v);
-                spark.callFunction(devices[9].id, 'controller', v, callback);
+                spark.callFunction(deviceID, 'controller', v, callback);
             };
             var _timer = null,
                 lastValue = 0,
