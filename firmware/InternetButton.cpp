@@ -232,7 +232,10 @@ void InternetButton::playNote(String note, int duration){
     int freq = 256;
     
      //if(9 - int(command.charAt(1)) != null){
-        octave = atoi(note.substring(1,2));
+    char octavo[5];
+    String tempString = note.substring(1,2);
+    tempString.toCharArray(octavo,5);
+    octave = atoi(octavo);
     //}
     
     if(duration != 0){
@@ -283,15 +286,18 @@ void InternetButton::playNote(String note, int duration){
 /*
  Arduino Library for Analog Devices ADXL362 - Micropower 3-axis accelerometer
  go to http://www.analog.com/ADXL362 for datasheet
+
  License: CC BY-SA 3.0: Creative Commons Share-alike 3.0. Feel free
  to use and abuse this code however you'd like. If you find it useful
  please attribute, and SHARE-ALIKE!
+
  Created June 2012
  by Anne Mahaffey - hosted on http://annem.github.com/ADXL362
  Modified Mars 2014
  by pixelk
  Modified for Spark Core/Button October 2014
  by jenesaisdiq
+
  */
 
 
@@ -659,12 +665,15 @@ void ADXL362::SPIwriteTwoRegisters(uint8_t regAddress, int twoRegValue){
   LED devices such as Adafruit NeoPixel strips.
   Currently handles 800 KHz and 400kHz bitstream on Spark Core,
   WS2812, WS2812B and WS2811.
+
   Also supports Radio Shack Tri-Color Strip with TM1803 controller
   400kHz bitstream.
+
   Written by Phil Burgess / Paint Your Dragon for Adafruit Industries.
   Modified to work with Spark Core by Technobly.
   Modified to work with Spark Button by jenesaisdiq.
   Contributions by PJRC and other members of the open source community.
+
   Adafruit invests time and resources providing this open source code,
   please support Adafruit and open-source hardware by purchasing products
   from Adafruit!
@@ -673,14 +682,17 @@ void ADXL362::SPIwriteTwoRegisters(uint8_t regAddress, int twoRegValue){
 /* ======================= Adafruit_NeoPixel.cpp ======================= */
 /*-------------------------------------------------------------------------
   This file is part of the Adafruit NeoPixel library.
+
   NeoPixel is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of
   the License, or (at your option) any later version.
+
   NeoPixel is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
+
   You should have received a copy of the GNU Lesser General Public
   License along with NeoPixel.  If not, see
   <http://www.gnu.org/licenses/>.
