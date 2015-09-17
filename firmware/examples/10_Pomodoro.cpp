@@ -45,7 +45,7 @@ void partiTime(){
         Particle.process();
     }
     b.allLedsOff();
-    //b.playSong("E5,8,G5,8,E6,8,C6,8,D6,8,G6,8");
+    b.playSong("E5,8,G5,8,E6,8,C6,8,D6,8,G6,8");
     initPomo();
     
 }//partiTime function = end of full cycle
