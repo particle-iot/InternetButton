@@ -22,7 +22,7 @@ void loop() {
 }//main Application Loop
 
 void pomoMain(){
-    if(millis()-startTime > 54500UL && checkFlag){//750UL = .75seconds, ex: 54500UL = 5.45 minutes
+    if(millis()-startTime > 327000UL && checkFlag){//750UL = .75seconds, ex: 327000UL = 5.45 minutes
         if(ledNum > 10){
             checkFlag = false;
             subFlag = true;
