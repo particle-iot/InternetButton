@@ -23,14 +23,14 @@ void loop() {
 
 void pomoMain(){
     if(millis()-startTime > 54500UL && checkFlag){//750UL = .75seconds, ex: 54500UL = 5.45 minutes
-        if(ledNum > 11){
+        if(ledNum > 10){
             checkFlag = false;
             subFlag = true;
             partiTime();
-        }else if(ledNum > 8){
-            b.ledOn(ledNum++, 0,53,0); //ex: b.ledOn(ledNumber, red, green, blue)
+        }else if(ledNum > 7){
+            b.ledOn(++ledNum, 0,53,0); //ex: b.ledOn(ledNumber, red, green, blue)
         }else{
-            b.ledOn(ledNum++, 105, 0,255);
+            b.ledOn(++ledNum, 105, 0,255);
         }
         
         startTime = millis();
@@ -68,5 +68,4 @@ void checkButton(){
     }//end of checkFlag toggle
     
 }//checkButton() is for Flag Checking
-
 
