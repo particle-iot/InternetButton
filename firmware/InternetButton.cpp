@@ -207,13 +207,13 @@ uint8_t InternetButton::lowestLed(){
 void InternetButton::playSong(String song){
     char inputStr[200];
     song.toCharArray(inputStr,200);
-    
+
     Serial.println(inputStr);
-    
+
     char *note = strtok(inputStr,",");
     char *duration = strtok(NULL,",");
     playNote(note,atoi(duration));
-    
+
     while(duration != NULL){
         note = strtok(NULL,",");
         Serial.println(note);
@@ -226,22 +226,30 @@ void InternetButton::playSong(String song){
     }
 }
 
+// Params:
+//     note - String in the form {NOTE}{OCTAVE}
 void InternetButton::playNote(String note, int duration){
     int noteNum = 0;
     int octave = 5;
+    int octaveIdx = 1;
     int freq = 256;
-    
-     //if(9 - int(command.charAt(1)) != null){
+    int semitone = 0;
+
+    //if(9 - int(command.charAt(1)) != null){
+    if (note.charAt(1) == '#') {
+        semitone = 1;
+        octaveIdx = 2;
+    }
     char octavo[5];
-    String tempString = note.substring(1,2);
+    String tempString = note.substring(octaveIdx,octaveIdx+1);
     tempString.toCharArray(octavo,5);
     octave = atoi(octavo);
     //}
-    
+
     if(duration != 0){
         duration = 1000/duration;
     }
-    
+
     switch(note.charAt(0)){
         case 'C':
             noteNum = 0;
@@ -271,12 +279,14 @@ void InternetButton::playNote(String note, int duration){
             break;
             //return -1;
     }
-    
+
+    noteNum += semitone;
+
     // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
     // fn = f0*(2^1/12)^n where n = number of half-steps from the reference frequency f0
     freq = float(256*pow(1.05946,(     12.0*(octave-4)        +noteNum)));
     //          C4^  (2^1/12)^    12 half-steps in an octave      ^how many extra half-steps within that octave, 0 for a C
-    
+
     tone(D0,int(freq),duration);
     delay(duration);
     noTone(D0);
