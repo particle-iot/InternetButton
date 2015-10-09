@@ -234,6 +234,9 @@ void InternetButton::playNote(String note, int duration){
      //if(9 - int(command.charAt(1)) != null){
     char octavo[5];
     String tempString = note.substring(1,2);
+    if (note.charAt(1) == '#') {
+        tempString = note.substring(2,3);
+    }
     tempString.toCharArray(octavo,5);
     octave = atoi(octavo);
     //}
@@ -244,25 +247,53 @@ void InternetButton::playNote(String note, int duration){
     
     switch(note.charAt(0)){
         case 'C':
-            noteNum = 0;
+            if (note.charAt(1) == '#') {
+                noteNum = 1;
+            } else {
+                noteNum = 0;
+            }
             break;
         case 'D':
-            noteNum = 2;
+            if (note.charAt(1) == '#') {
+                noteNum = 3;
+            } else {
+                noteNum = 2;
+            }
             break;
         case 'E':
-            noteNum = 4;
+            if (note.charAt(1) == '#') {
+                noteNum = 5;
+            } else {
+                noteNum = 4;
+            }
             break;
         case 'F':
-            noteNum = 5;
+            if (note.charAt(1) == '#') {
+                noteNum = 6;
+            } else {
+                noteNum = 5;
+            }
             break;
         case 'G':
-            noteNum = 7;
+            if (note.charAt(1) == '#') {
+                noteNum = 8;
+            } else {
+                noteNum = 7;
+            }
             break;
         case 'A':
-            noteNum = 9;
+            if (note.charAt(1) == '#') {
+                noteNum = 10;
+            } else {
+                noteNum = 9;
+            }
             break;
         case 'B':
-            noteNum = 11;
+            if (note.charAt(1) == '#') {
+                noteNum = 12;
+            } else {
+                noteNum = 11;
+            }
             break;
         case 'R':          // Rest note
             octave = -1;
