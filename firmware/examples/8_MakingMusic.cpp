@@ -12,6 +12,9 @@ void setup() {
     // Types are note types that define duration so 
     // 8 is a 1/8th note and 4 is a 1/4 note
     b.playSong("C4,8,E4,8,G4,8,C5,8,G5,4");
+    // You can also use sharp and flat notes, like Eb5 and D#5
+    // in the following example:
+    b.playSong("E5,8,Eb5,8,E5,8,D#5,8,E5,8,B4,8,D5,8,C5,8,A3,4");
 }
 
 void loop() {
