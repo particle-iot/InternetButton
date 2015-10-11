@@ -239,6 +239,9 @@ void InternetButton::playNote(String note, int duration){
     if (note.charAt(1) == '#') {
         semitone = 1;
         octaveIdx = 2;
+    } else if (note.charAt(1) == 'b') {
+        semitone = -1;
+        octaveIdx = 2;
     }
     char octavo[5];
     String tempString = note.substring(octaveIdx,octaveIdx+1);
