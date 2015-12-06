@@ -33,6 +33,7 @@ class InternetButton {
   void
     begin(void),
     begin(int i),
+    setNumLeds(uint8_t i),
     allLedsOff(void),
     allLedsOn(uint8_t r, uint8_t g, uint8_t b),
     ledOn(uint8_t i, uint8_t r, uint8_t g, uint8_t b),
@@ -249,7 +250,9 @@ class Adafruit_NeoPixel {
     setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
     setPixelColor(uint16_t n, uint32_t c),
     setBrightness(uint8_t),
-    clear(void);
+    clear(void),
+    updateLength(uint16_t n),
+    updateType(uint8_t t);
   uint8_t
    *getPixels() const,
     getBrightness(void) const;
@@ -262,15 +265,19 @@ class Adafruit_NeoPixel {
 
  private:
 
-  const uint16_t
+  uint16_t
     numLEDs,       // Number of RGB LEDs in strip
     numBytes;      // Size of 'pixels' buffer below
-  const uint8_t
+  uint8_t
     type;          // Pixel type flag (400 vs 800 KHz)
   uint8_t
     //pin,           // Output pin number
     brightness,
-   *pixels;        // Holds LED color values (3 bytes each)
+   *pixels,       // Holds LED color values (3 bytes each)
+   rOffset,       // Index of red byte within each 3- or 4-byte pixel
+   gOffset,       // Index of green byte
+   bOffset,       // Index of blue byte
+   wOffset;       // Index of white byte (same as rOffset if no white)
   uint32_t
     endTime;       // Latch timing reference
 };

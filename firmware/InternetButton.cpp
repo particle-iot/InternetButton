@@ -8,9 +8,9 @@ uint8_t b1 = 4;
 uint8_t b2 = 5;
 uint8_t b3 = 6;
 uint8_t b4 = 7;
+uint8_t numRingLeds = PIXEL_COUNT;
 
-
-Adafruit_NeoPixel ring = Adafruit_NeoPixel(PIXEL_COUNT, pin, PIXEL_TYPE);
+Adafruit_NeoPixel ring = Adafruit_NeoPixel(numRingLeds, pin, PIXEL_TYPE);
 ADXL362 accelerometer;
 
 InternetButton::InternetButton(){
@@ -54,9 +54,14 @@ void InternetButton::begin(int i){
     pinMode(b4, INPUT_PULLUP);
 }
 
+void InternetButton::setNumLeds(uint8_t i){
+  numRingLeds = i;
+  ring.updateLength(numRingLeds);
+}
+
 void InternetButton::ledOn(uint8_t i, uint8_t r, uint8_t g, uint8_t b){
     //i-1 shifts the location from human readable to the right index for the LEDs
-    if(i == 12){
+    if((i == 12) && (numRingLeds <= 11)){
         ring.setPixelColor(0, ring.Color(r,g,b));
         ring.setPixelColor(10, ring.Color(r,g,b));
     }
@@ -207,13 +212,13 @@ uint8_t InternetButton::lowestLed(){
 void InternetButton::playSong(String song){
     char inputStr[200];
     song.toCharArray(inputStr,200);
-    
+
     Serial.println(inputStr);
-    
+
     char *note = strtok(inputStr,",");
     char *duration = strtok(NULL,",");
     playNote(note,atoi(duration));
-    
+
     while(duration != NULL){
         note = strtok(NULL,",");
         Serial.println(note);
@@ -230,18 +235,18 @@ void InternetButton::playNote(String note, int duration){
     int noteNum = 0;
     int octave = 5;
     int freq = 256;
-    
+
      //if(9 - int(command.charAt(1)) != null){
     char octavo[5];
     String tempString = note.substring(1,2);
     tempString.toCharArray(octavo,5);
     octave = atoi(octavo);
     //}
-    
+
     if(duration != 0){
         duration = 1000/duration;
     }
-    
+
     switch(note.charAt(0)){
         case 'C':
             noteNum = 0;
@@ -271,12 +276,12 @@ void InternetButton::playNote(String note, int duration){
             break;
             //return -1;
     }
-    
+
     // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
     // fn = f0*(2^1/12)^n where n = number of half-steps from the reference frequency f0
     freq = float(256*pow(1.05946,(     12.0*(octave-4)        +noteNum)));
     //          C4^  (2^1/12)^    12 half-steps in an octave      ^how many extra half-steps within that octave, 0 for a C
-    
+
     tone(D0,int(freq),duration);
     delay(duration);
     noTone(D0);
@@ -715,9 +720,9 @@ void ADXL362::SPIwriteTwoRegisters(uint8_t regAddress, int twoRegValue){
 Adafruit_NeoPixel::Adafruit_NeoPixel(uint16_t n, uint8_t p, uint8_t t) :
   numLEDs(n), numBytes(n*3), brightness(0), pixels(NULL), type(t), endTime(0)
 {
-  if((pixels = (uint8_t *)malloc(numBytes))) {
-    memset(pixels, 0, numBytes);
-  }
+  updateType(t);
+  updateLength(n);
+  setPin(p);
 }
 
 Adafruit_NeoPixel::~Adafruit_NeoPixel() {
@@ -728,6 +733,38 @@ Adafruit_NeoPixel::~Adafruit_NeoPixel() {
 void Adafruit_NeoPixel::begin(void) {
   pinMode(pin, OUTPUT);
   digitalWrite(pin, LOW);
+}
+
+void Adafruit_NeoPixel::updateLength(uint16_t n) {
+  if(pixels) free(pixels); // Free existing data (if any)
+
+  // Allocate new data -- note: ALL PIXELS ARE CLEARED
+  numBytes = n * ((wOffset == rOffset) ? 3 : 4);
+  if((pixels = (uint8_t *)malloc(numBytes))) {
+    memset(pixels, 0, numBytes);
+    numLEDs = n;
+  } else {
+    numLEDs = numBytes = 0;
+  }
+}
+
+void Adafruit_NeoPixel::updateType(uint8_t t) {
+  boolean oldThreeBytesPerPixel = (wOffset == rOffset); // false if RGBW
+
+  wOffset = (t >> 6) & 0b11; // See notes in header file
+  rOffset = (t >> 4) & 0b11; // regarding R/G/B/W offsets
+  gOffset = (t >> 2) & 0b11;
+  bOffset =  t       & 0b11;
+#ifdef NEO_KHZ400
+  is800KHz = (t < 256);      // 400 KHz flag is 1<<8
+#endif
+
+  // If bytes-per-pixel has changed (and pixel data was previously
+  // allocated), re-allocate to new size.  Will clear any data.
+  if(pixels) {
+    boolean newThreeBytesPerPixel = (wOffset == rOffset);
+    if(newThreeBytesPerPixel != oldThreeBytesPerPixel) updateLength(numLEDs);
+  }
 }
 
 void Adafruit_NeoPixel::show(void) {
