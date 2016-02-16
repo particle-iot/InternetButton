@@ -25,7 +25,7 @@ void setup() {
 
     //This is all you need to make the function controller() available to the internet
     //The API name and the local name don't need to be the same; just my style
-    Spark.function("controller", controller);
+    Particle.function("controller", controller);
 
     //This function figures out what combination color, brightness and LEDs to display
     makeColors();
