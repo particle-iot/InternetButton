@@ -37,27 +37,27 @@ void setup() {
     // Registering a whole bunch of useful functions
     
     // Turn an LED on using the format "LED_NUMBER,RED_INT,GREEN_INT,BLUE_INT"
-    Spark.function("ledOn", ledOnRemote);
+    Particle.function("ledOn", ledOnRemote);
     
     // Turn an LED off, format is "LED_NUMBER"
-    Spark.function("ledOff", ledOffRemote);
+    Particle.function("ledOff", ledOffRemote);
     
     // Turn all the LEDs on, format is "RED_INT,GREEN_INT,BLUE_INT"
-    Spark.function("allLedsOn", ledAllOnRemote);
+    Particle.function("allLedsOn", ledAllOnRemote);
     
     // Turn all the LEDs off. Doesn't take any arguments. Or any of your lip.
-    Spark.function("allLedsOff", ledAllOffRemote);
+    Particle.function("allLedsOff", ledAllOffRemote);
     
     // Woooo rainbows! Just tell it how many seconds.
-    Spark.function("rainbow", rainbowRemote);
+    Particle.function("rainbow", rainbowRemote);
     
     // Gauge display- animates a value, just send it a number 1-66
-    Spark.function("gauge",gaugeRemote);
+    Particle.function("gauge",gaugeRemote);
     
     /* Takes in a string of the format "NOTE,DURATION,NOTE,DURATION..."
        For example "C4,8,D4,4" will play a middle C 1/8th note, then a middle D 1/4 note
        and "E5,8,G5,8,E6,8,C6,8,D6,8,G6,8" will play a familiar tune */
-    Spark.function("play",playTune);
+    Particle.function("play",playTune);
 }
 
 /* loop(), in contrast to setup(), runs all the time. Over and over again. 
@@ -66,7 +66,7 @@ void loop() {
     if(b.allButtonsOn()){
         if(!buttonAll){
             buttonAll = 1;
-            Spark.publish("allbuttons",NULL, 60, PRIVATE);
+            Particle.publish("allbuttons",NULL, 60, PRIVATE);
             b.rainbow(10);
         }
     }
@@ -76,7 +76,7 @@ void loop() {
     if(b.buttonOn(1)){                                      // If button1 is on
         if(!button1){                                       // and hasn't already been on
             button1 = 1;                                    // then you should know that it's on now
-            Spark.publish("button1",NULL, 60, PRIVATE);     // and publish that it's on
+            Particle.publish("button1",NULL, 60, PRIVATE);     // and publish that it's on
             ledControl(12);                                 // and do some pretty LED things for the user
         }
     }
@@ -85,7 +85,7 @@ void loop() {
     if(b.buttonOn(2)){ 
         if(!button2){
             button2 = 1;
-            Spark.publish("button2",NULL, 60, PRIVATE);
+            Particle.publish("button2",NULL, 60, PRIVATE);
             ledControl(3);
         }
     }
@@ -94,7 +94,7 @@ void loop() {
     if(b.buttonOn(3)){
         if(!button3){
             button3 = 1;
-            Spark.publish("button3",NULL, 60, PRIVATE);
+            Particle.publish("button3",NULL, 60, PRIVATE);
             ledControl(6);
         }
     }
@@ -103,7 +103,7 @@ void loop() {
     if(b.buttonOn(4)){
         if(!button4){
             button4 = 1;
-            Spark.publish("button4",NULL, 60, PRIVATE);
+            Particle.publish("button4",NULL, 60, PRIVATE);
             ledControl(9);
         }
     }
