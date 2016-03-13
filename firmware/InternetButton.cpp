@@ -173,6 +173,24 @@ void InternetButton::rainbow(uint8_t wait) {
   }
 }
 
+void InternetButton::spin(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
+  uint16_t i, j;
+
+    for(i=0; i< 12; i++) {
+
+        int mainPixel = i;
+        int pMinus1 = (i-1)%12;
+        int pMinus2 = (i-2)%12;
+
+        allLedsOff();
+        ring.setPixelColor(mainPixel, ring.Color(r, g, b));
+        ring.setPixelColor(pMinus1, ring.Color(max(0,r-100), max(0,g-100), max(0,b-100)));
+        ring.setPixelColor(pMinus2, ring.Color(max(0,r-200), max(0,g-200), max(0,b-200)));
+        ring.show();
+        delay(wait);
+    }
+}
+
 int InternetButton::readX(){
     return accelerometer.readX();
 }
