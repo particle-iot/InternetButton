@@ -207,13 +207,13 @@ uint8_t InternetButton::lowestLed(){
 void InternetButton::playSong(String song){
     char inputStr[200];
     song.toCharArray(inputStr,200);
-    
+
     Serial.println(inputStr);
-    
+
     char *note = strtok(inputStr,",");
     char *duration = strtok(NULL,",");
     playNote(note,atoi(duration));
-    
+
     while(duration != NULL){
         note = strtok(NULL,",");
         Serial.println(note);
@@ -230,18 +230,18 @@ void InternetButton::playNote(String note, int duration){
     int noteNum = 0;
     int octave = 5;
     int freq = 256;
-    
+
      //if(9 - int(command.charAt(1)) != null){
     char octavo[5];
     String tempString = note.substring(1,2);
     tempString.toCharArray(octavo,5);
     octave = atoi(octavo);
     //}
-    
+
     if(duration != 0){
         duration = 1000/duration;
     }
-    
+
     switch(note.charAt(0)){
         case 'C':
             noteNum = 0;
@@ -271,12 +271,12 @@ void InternetButton::playNote(String note, int duration){
             break;
             //return -1;
     }
-    
+
     // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
     // fn = f0*(2^1/12)^n where n = number of half-steps from the reference frequency f0
     freq = float(256*pow(1.05946,(     12.0*(octave-4)        +noteNum)));
     //          C4^  (2^1/12)^    12 half-steps in an octave      ^how many extra half-steps within that octave, 0 for a C
-    
+
     tone(D0,int(freq),duration);
     delay(duration);
     noTone(D0);
@@ -701,7 +701,7 @@ void ADXL362::SPIwriteTwoRegisters(uint8_t regAddress, int twoRegValue){
 #if PLATFORM_ID == 0 // Core
   #define pinLO(_pin) (PIN_MAP[_pin].gpio_peripheral->BRR = PIN_MAP[_pin].gpio_pin)
   #define pinHI(_pin) (PIN_MAP[_pin].gpio_peripheral->BSRR = PIN_MAP[_pin].gpio_pin)
-#elif PLATFORM_ID == 6 // Photon
+#elif PLATFORM_ID == 6 || PLATFORM_ID == 8 || PLATFORM_ID == 10 || PLATFORM_ID == 88 // Photon / P1 / Electron / Duo
   //#include "pinmap_impl.h"
   STM32_Pin_Info* PIN_MAP2 = HAL_Pin_Map(); // Pointer required for highest access speed
   #define pinLO(_pin) (PIN_MAP2[_pin].gpio_peripheral->BSRRH = PIN_MAP2[_pin].gpio_pin)
@@ -797,7 +797,7 @@ void Adafruit_NeoPixel::show(void) {
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t"
-#if PLATFORM_ID == 6 // Photon
+#if PLATFORM_ID == 6 || PLATFORM_ID == 8 || PLATFORM_ID == 10 || PLATFORM_ID == 88 // Photon / P1 / Electron / Duo
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -815,7 +815,7 @@ void Adafruit_NeoPixel::show(void) {
           pinSet(pin, LOW); // LOW
           asm volatile(
             "mov r0, r0" "\n\t"
-#if PLATFORM_ID == 6 // Photon
+#if PLATFORM_ID == 6 || PLATFORM_ID == 8 || PLATFORM_ID == 10 || PLATFORM_ID == 88 // Photon / P1 / Electron / Duo
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -832,7 +832,7 @@ void Adafruit_NeoPixel::show(void) {
           // This lib on Photon     (meas. 308ns)
           asm volatile(
             "mov r0, r0" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
-#if PLATFORM_ID == 6 // Photon
+#if PLATFORM_ID == 6 || PLATFORM_ID == 8 || PLATFORM_ID == 10 || PLATFORM_ID == 88 // Photon / P1 / Electron / Duo
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -851,7 +851,7 @@ void Adafruit_NeoPixel::show(void) {
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
-#if PLATFORM_ID == 6 // Photon
+#if PLATFORM_ID == 6 || PLATFORM_ID == 8 || PLATFORM_ID == 10 || PLATFORM_ID == 88 // Photon / P1 / Electron / Duo
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
             "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t" "nop" "\n\t"
@@ -871,7 +871,7 @@ void Adafruit_NeoPixel::show(void) {
     } // end while(i) ... no more pixels
   }
   else if(type == WS2812B2) { // WS2812B with DWT timer
-#if PLATFORM_ID == 6 // Photon
+#if PLATFORM_ID == 6 || PLATFORM_ID == 8 || PLATFORM_ID == 10 || PLATFORM_ID == 88 // Photon / P1 / Electron / Duo
     #define CYCLES_800_T0H  25 // 312ns (meas. 300ns)
     #define CYCLES_800_T0L  70 // 938ns (meas. 940ns)
     #define CYCLES_800_T1H  80 // 812ns (meas. 792ns)
