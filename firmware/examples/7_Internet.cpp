@@ -3,7 +3,7 @@
 
 /* Let me show you how easy it is to put the Button on the Internet.
 Useful info, like how to access the data from your browser, can be
-found here: http://docs.particle.io/photon/firmware/#spark-function
+found here: http://docs.particle.io/photon/firmware/#particle-function
 
 The code to control the number of illuminated LEDs is here:
 https://github.com/spark/InternetButton/blob/master/controlKnob.html
@@ -64,7 +64,7 @@ void loop(){
         }
     }
 
-    //If anything's been altered by clicking or the Spark.function, update the LEDs
+    //If anything's been altered by clicking or the Particle.function, update the LEDs
     if(changed){
         delay(10);
         makeColors();
