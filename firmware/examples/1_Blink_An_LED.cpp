@@ -14,7 +14,7 @@ void setup() {
 }
 
 /* loop(), in contrast to setup(), runs all the time. Over and over again.
-Remember this particularly if there are things you DON'T want to run a lot. Like Spark.publish() */
+Remember this particularly if there are things you DON'T want to run a lot. Like Particle.publish() */
 void loop() {
     // Let's turn an LED on. How about #6, which is at the 6 o'clock position? Let's make it blue and bright.
     b.ledOn(6, 0, 0, 255);
