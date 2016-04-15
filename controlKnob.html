@@ -30,13 +30,19 @@
             console.log('Devices: ', devices);
 
             var deviceID = devices[0].id;
+            var foundButtonName = 0;
 
-            //Look for a Spark device named "InternetButton"
+            //Look for a Particle device named "InternetButton"
             for(var i = 0; i < devices.length; i++){
                 if(devices[i].name == "InternetButton"){
                     deviceID = devices[i].id;
+                    foundButtonName = 1;
                     break;
                 }
+            }
+            // If you didn't find one named InternetButton, hope that they have one device and this is it
+            if(foundButtonName == 0){
+            	deviceId = devices[0].id;
             }
 
             //
@@ -50,7 +56,7 @@
                 }
               };
 
-            //Call the Spark.function!
+            //Call the Particle.function!
             var sendApiRequest = function (v) {
                 console.log('setting lamp to ' + v);
                 spark.callFunction(deviceID, 'controller', v, callback);
