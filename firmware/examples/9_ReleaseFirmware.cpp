@@ -61,7 +61,7 @@ void setup() {
 }
 
 /* loop(), in contrast to setup(), runs all the time. Over and over again. 
-Remember this particularly if there are things you DON'T want to run a lot. Like Spark.publish() */
+Remember this particularly if there are things you DON'T want to run a lot. Like Particle.publish() */
 void loop() {
     if(b.allButtonsOn()){
         if(!buttonAll){
