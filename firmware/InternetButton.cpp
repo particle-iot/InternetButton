@@ -230,13 +230,19 @@ void InternetButton::playNote(String note, int duration){
     int noteNum = 0;
     int octave = 5;
     int freq = 256;
-    
-     //if(9 - int(command.charAt(1)) != null){
-    char octavo[5];
-    String tempString = note.substring(1,2);
-    tempString.toCharArray(octavo,5);
-    octave = atoi(octavo);
-    //}
+    int halfStep = 0;
+
+    if (note.length() > 1) {
+        // If this is a rest note will just be "R"
+        if (note.charAt(1) == '#') {
+            halfStep = 1;
+        } else if (note.charAt(1) == 'b') {
+            halfStep = -1;
+        }
+
+        const char octave_char = note.charAt(!halfStep ? 1 : 2);
+        octave = atoi(&octave_char);
+    }
     
     if(duration != 0){
         duration = 1000/duration;
@@ -271,7 +277,14 @@ void InternetButton::playNote(String note, int duration){
             break;
             //return -1;
     }
-    
+
+    // Add in any half steps
+    noteNum += halfStep;
+    if (noteNum == -1) {
+        // Wrap around to B (Cb == B).
+        noteNum = 11;
+    }
+
     // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
     // fn = f0*(2^1/12)^n where n = number of half-steps from the reference frequency f0
     freq = float(256*pow(1.05946,(     12.0*(octave-4)        +noteNum)));
