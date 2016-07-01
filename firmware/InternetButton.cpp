@@ -152,6 +152,24 @@ uint8_t InternetButton::allButtonsOff(){
     }
 }
 
+uint8_t InternetButton::whichButtonsOn(){
+    uint8_t ret = 0;
+    ret |= digitalRead(b1) << 1;  // bit 1 0b00000010
+    ret |= digitalRead(b2) << 2;  // bit 2 0b00000100
+    ret |= digitalRead(b3) << 3;  // bit 3 0b00001000
+    ret |= digitalRead(b4) << 4;  // bit 4 0b00010000
+    return ret;
+}
+
+uint8_t InternetButton::firstButtonOn(){
+    uint8_t ret = 0;
+    if (digitalRead(b1)) return 1;
+    if (digitalRead(b2)) return 2;
+    if (digitalRead(b3)) return 3;
+    if (digitalRead(b4)) return 4;
+    return 0;
+}
+
 void InternetButton::rainbow(uint8_t wait) {
   uint16_t i, j;
 
