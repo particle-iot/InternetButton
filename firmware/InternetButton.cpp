@@ -216,12 +216,7 @@ void InternetButton::playSong(String song){
     
     while(duration != NULL){
         note = strtok(NULL,",");
-        Serial.println(note);
         duration = strtok(NULL,", \n");
-        Serial.println(duration);
-        //if(atoi(duration) <= 0){
-        //    break;
-        //}
         playNote(note,atoi(duration));
     }
 }
@@ -233,10 +228,16 @@ void InternetButton::playNote(String note, int duration){
     
      //if(9 - int(command.charAt(1)) != null){
     char octavo[5];
-    String tempString = note.substring(1,2);
+    String tempString = note.substring(note.length()-1,note.length());
     tempString.toCharArray(octavo,5);
     octave = atoi(octavo);
     //}
+    
+    Serial.print(note);
+    Serial.print(" ");
+    Serial.print(octave);
+    Serial.print(" ");
+    Serial.println(duration);
     
     if(duration != 0){
         duration = 1000/duration;
@@ -270,6 +271,16 @@ void InternetButton::playNote(String note, int duration){
         default:
             break;
             //return -1;
+    }
+    
+    switch(note.charAt(1)) {
+        case '#': // sharp
+            noteNum++;
+            break;
+        case 'b': // flat
+            noteNum--;
+        default:
+            break;
     }
     
     // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
