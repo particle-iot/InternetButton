@@ -152,6 +152,24 @@ uint8_t InternetButton::allButtonsOff(){
     }
 }
 
+uint8_t InternetButton::whichButtonsOn(){
+    uint8_t ret = 0;
+    ret |= digitalRead(b1) << 1;  // bit 1 0b00000010
+    ret |= digitalRead(b2) << 2;  // bit 2 0b00000100
+    ret |= digitalRead(b3) << 3;  // bit 3 0b00001000
+    ret |= digitalRead(b4) << 4;  // bit 4 0b00010000
+    return ret;
+}
+
+uint8_t InternetButton::firstButtonOn(){
+    uint8_t ret = 0;
+    if (digitalRead(b1)) return 1;
+    if (digitalRead(b2)) return 2;
+    if (digitalRead(b3)) return 3;
+    if (digitalRead(b4)) return 4;
+    return 0;
+}
+
 void InternetButton::rainbow(uint8_t wait) {
   uint16_t i, j;
 
@@ -204,6 +222,7 @@ uint8_t InternetButton::lowestLed(){
     return ledPos;
 }
 
+// song string can look like this "C4,1,C#4,1,Db4,1" for sharp (#) and flat (b) notes
 void InternetButton::playSong(String song){
     char inputStr[200];
     song.toCharArray(inputStr,200);
@@ -216,12 +235,7 @@ void InternetButton::playSong(String song){
     
     while(duration != NULL){
         note = strtok(NULL,",");
-        Serial.println(note);
         duration = strtok(NULL,", \n");
-        Serial.println(duration);
-        //if(atoi(duration) <= 0){
-        //    break;
-        //}
         playNote(note,atoi(duration));
     }
 }
@@ -233,10 +247,16 @@ void InternetButton::playNote(String note, int duration){
     
      //if(9 - int(command.charAt(1)) != null){
     char octavo[5];
-    String tempString = note.substring(1,2);
+    String tempString = note.substring(note.length()-1,note.length());
     tempString.toCharArray(octavo,5);
     octave = atoi(octavo);
     //}
+    
+    Serial.print(note);
+    Serial.print(" ");
+    Serial.print(octave);
+    Serial.print(" ");
+    Serial.println(duration);
     
     if(duration != 0){
         duration = 1000/duration;
@@ -270,6 +290,16 @@ void InternetButton::playNote(String note, int duration){
         default:
             break;
             //return -1;
+    }
+    
+    switch(note.charAt(1)) {
+        case '#': // sharp
+            noteNum++;
+            break;
+        case 'b': // flat
+            noteNum--;
+        default:
+            break;
     }
     
     // based on equation at http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html and the Verdi tuning
