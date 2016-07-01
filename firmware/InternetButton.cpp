@@ -204,6 +204,7 @@ uint8_t InternetButton::lowestLed(){
     return ledPos;
 }
 
+// song string can look like this "C4,1,C#4,1,Db4,1" for sharp (#) and flat (b) notes
 void InternetButton::playSong(String song){
     char inputStr[200];
     song.toCharArray(inputStr,200);
