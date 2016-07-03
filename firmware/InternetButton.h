@@ -24,6 +24,8 @@
 #ifndef InternetButton_h
 #define InternetButton_h
 
+//------------- InternetButton --------------
+
 class InternetButton {
 
  public:
@@ -37,24 +39,33 @@ class InternetButton {
     allLedsOn(uint8_t r, uint8_t g, uint8_t b),
     ledOn(uint8_t i, uint8_t r, uint8_t g, uint8_t b),
     ledOff(uint8_t i),
+    wheel(uint8_t i, uint8_t j),
     rainbow(uint8_t wait),
+    kickTheRainbow(uint8_t amount, uint8_t wait),
     playNote(String note, int duration),
     playSong(String song),
-    smoothLedOn(float i, uint8_t r, uint8_t g, uint8_t b);
+    smoothLedOn(float i, uint8_t r, uint8_t g, uint8_t b),
+    setBrightness(uint8_t),
+    setBPM(int beats_per_minute);
   uint8_t
     buttonOn(uint8_t i),
     allButtonsOn(void),
     allButtonsOff(void),
-    lowestLed(void);
+    lowestLed(void),
+    getBrightness(void);
   int
     readX(void),
     readY(void),
     readZ(void),
     readX16(void),
     readY16(void),
-    readZ16(void);
+    readZ16(void),
+    getBPM(void);
 
  private:
+
+  int
+    bpm = 250;
 
 };
 
@@ -175,9 +186,6 @@ private:
 
 };
 
-
-
-
 //----------------- LED Handling ------------------------
 #define PIXEL_COUNT 11
 //#define PIXEL_PIN D3
@@ -262,6 +270,8 @@ class Adafruit_NeoPixel {
 
  private:
 
+  int
+    bpm = 250;     // beats per minute (default 250)
   const uint16_t
     numLEDs,       // Number of RGB LEDs in strip
     numBytes;      // Size of 'pixels' buffer below

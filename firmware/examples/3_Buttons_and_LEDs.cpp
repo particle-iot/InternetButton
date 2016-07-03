@@ -9,6 +9,8 @@ void setup() {
     // Use b.begin(1); if you have the original SparkButton, which does not have a buzzer or a plastic enclosure
     // to use, just add a '1' between the parentheses in the code below.
     b.begin();
+    // Here's another way to limit the overall brightness, so you don't have to do it for each pixel
+    b.setBrightness(50);
 }
 
 void loop(){
