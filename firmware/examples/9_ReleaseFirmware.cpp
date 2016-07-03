@@ -43,6 +43,8 @@ void setup() {
     int bpm = b.getBPM(); // default is 250
     // Set BPM
     b.setBPM(bpm);
+    // Set number of LEDs if desired (11 by default)
+    b.setNumLeds(11);
 
     // Registering a whole bunch of useful functions
 

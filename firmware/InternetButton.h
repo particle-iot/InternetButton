@@ -35,6 +35,7 @@ class InternetButton {
   void
     begin(void),
     begin(int i),
+    setNumLeds(uint8_t i),
     allLedsOff(void),
     allLedsOn(uint8_t r, uint8_t g, uint8_t b),
     ledOn(uint8_t i, uint8_t r, uint8_t g, uint8_t b),
@@ -193,17 +194,31 @@ private:
 #define PIXEL_TYPE WS2812B
 
 /*-------------------------------------------------------------------------
-  Spark Core library to control WS2811/WS2812 based RGB
-  LED devices such as Adafruit NeoPixel strips.
-  Currently handles 800 KHz and 400kHz bitstream on Spark Core,
-  WS2812, WS2812B and WS2811.
+  Spark Core, Particle Photon, P1, Electron and RedBear Duo library to control
+  WS2811/WS2812 based RGB LED devices such as Adafruit NeoPixel strips.
 
-  Also supports Radio Shack Tri-Color Strip with TM1803 controller
-  400kHz bitstream.
+  Supports:
+  - 800 KHz and 400kHz bitstream WS2812, WS2812B and WS2811
+  - 800 KHz bitstream SK6812RGBW (NeoPixel RGBW pixel strips)
+    (use 'SK6812RGBW' as PIXEL_TYPE)
+
+  Also supports:
+  - Radio Shack Tri-Color Strip with TM1803 controller 400kHz bitstream.
+  - TM1829 pixels
+
+  PLEASE NOTE that the NeoPixels require 5V level inputs
+  and the Spark Core, Particle Photon, P1, Electron and RedBear Duo only
+  have 3.3V level outputs. Level shifting is necessary, but will require
+  a fast device such as one of the following:
+
+  [SN74HCT125N]
+  http://www.digikey.com/product-detail/en/SN74HCT125N/296-8386-5-ND/376860
+
+  [SN74HCT245N]
+  http://www.digikey.com/product-detail/en/SN74HCT245N/296-1612-5-ND/277258
 
   Written by Phil Burgess / Paint Your Dragon for Adafruit Industries.
-  Modified to work with Spark Core by Technobly.
-  Modified to work with Spark Button by jenesaisdiq.
+  Modified to work with Particle devices by Technobly.
   Contributions by PJRC and other members of the open source community.
 
   Adafruit invests time and resources providing this open source code,
@@ -230,18 +245,14 @@ private:
   <http://www.gnu.org/licenses/>.
   --------------------------------------------------------------------*/
 
-#ifndef SPARK_NEOPIXEL_H
-#define SPARK_NEOPIXEL_H
-
-#include "application.h"
-
 // 'type' flags for LED pixels (third parameter to constructor):
+#define WS2811   0x00 // 400 KHz datastream (NeoPixel)
 #define WS2812   0x02 // 800 KHz datastream (NeoPixel)
 #define WS2812B  0x02 // 800 KHz datastream (NeoPixel)
-#define WS2811   0x00 // 400 KHz datastream (NeoPixel)
 #define TM1803   0x03 // 400 KHz datastream (Radio Shack Tri-Color Strip)
 #define TM1829   0x04 // 800 KHz datastream ()
 #define WS2812B2 0x05 // 800 KHz datastream (NeoPixel)
+#define SK6812RGBW 0x06 // 800 KHz datastream (NeoPixel RGBW)
 
 class Adafruit_NeoPixel {
 
@@ -256,35 +267,46 @@ class Adafruit_NeoPixel {
     show(void) __attribute__((optimize("Ofast"))),
     setPin(uint8_t p),
     setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
+    setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b, uint8_t w),
     setPixelColor(uint16_t n, uint32_t c),
     setBrightness(uint8_t),
+    setColor(uint16_t aLedNumber, byte aRed, byte aGreen, byte aBlue),
+    setColor(uint16_t aLedNumber, byte aRed, byte aGreen, byte aBlue, byte aWhite),
+    setColorScaled(uint16_t aLedNumber, byte aRed, byte aGreen, byte aBlue, byte aScaling),
+    setColorScaled(uint16_t aLedNumber, byte aRed, byte aGreen, byte aBlue, byte aWhite, byte aScaling),
+    setColorDimmed(uint16_t aLedNumber, byte aRed, byte aGreen, byte aBlue, byte aBrightness),
+    setColorDimmed(uint16_t aLedNumber, byte aRed, byte aGreen, byte aBlue, byte aWhite, byte aBrightness),
+    updateLength(uint16_t n),
     clear(void);
   uint8_t
    *getPixels() const,
     getBrightness(void) const;
   uint16_t
-    numPixels(void) const;
+    numPixels(void) const,
+    getNumLeds(void) const;
   static uint32_t
-    Color(uint8_t r, uint8_t g, uint8_t b);
+    Color(uint8_t r, uint8_t g, uint8_t b),
+    Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w);
   uint32_t
     getPixelColor(uint16_t n) const;
+  byte
+    brightnessToPWM(byte aBrightness);
 
  private:
 
-  int
-    bpm = 250;     // beats per minute (default 250)
-  const uint16_t
+  bool
+    begun;         // true if begin() previously called
+  uint16_t
     numLEDs,       // Number of RGB LEDs in strip
     numBytes;      // Size of 'pixels' buffer below
   const uint8_t
     type;          // Pixel type flag (400 vs 800 KHz)
   uint8_t
-    //pin,           // Output pin number
+    pin,           // Output pin number
     brightness,
    *pixels;        // Holds LED color values (3 bytes each)
   uint32_t
     endTime;       // Latch timing reference
 };
 
-#endif // ADAFRUIT_NEOPIXEL_H
 #endif // InternetButton_h
