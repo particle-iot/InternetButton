@@ -179,7 +179,7 @@ void InternetButton::rainbow(uint8_t wait) {
     }
 }
 
-void InternetButton::kickTheRainbow(uint8_t amount, uint8_t wait) {
+void InternetButton::advanceRainbow(uint8_t amount, uint8_t wait) {
     uint16_t i;
     static uint16_t j = 0;
 

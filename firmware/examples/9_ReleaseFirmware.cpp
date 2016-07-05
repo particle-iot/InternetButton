@@ -161,7 +161,7 @@ int rainbowRemote(String command){
     uint32_t i = atoi(inputStr);
     uint32_t startMillis = millis();
     while(millis() - startMillis < i*1000UL){
-        b.kickTheRainbow(10,30);
+        b.advanceRainbow(10,30);
         Particle.process();
     }
     b.allLedsOff();

@@ -78,17 +78,17 @@ bool isPaused() {
 
 // Called once per note in the song
 void otherTasks() {
-    b.kickTheRainbow(25, 0);
+    b.advanceRainbow(25, 0);
     while (isPaused()) {        // while paused...
         b.setBrightness(50);    // dim the LEDs
-        b.kickTheRainbow(1, 2); // smoother rainbow
+        b.advanceRainbow(1, 2); // smoother rainbow
         Particle.process();     // keep our Cloud connection going
     }
     b.setBrightness(255); // re-brighten the jam!
 }
 
 /* This is the InternetButton::playSong(String song) routine
- * pulled out here so we can call kickTheRainbow() and read
+ * pulled out here so we can call advanceRainbow() and read
  * buttons in-between playing notes!
  */
 void playSongAndProcess(String song){
