@@ -39,7 +39,6 @@ class InternetButton {
     allLedsOn(uint8_t r, uint8_t g, uint8_t b),
     ledOn(uint8_t i, uint8_t r, uint8_t g, uint8_t b),
     ledOff(uint8_t i),
-    wheel(uint8_t i, uint8_t j),
     rainbow(uint8_t wait),
     kickTheRainbow(uint8_t amount, uint8_t wait),
     playNote(String note, int duration),
@@ -61,6 +60,8 @@ class InternetButton {
     readY16(void),
     readZ16(void),
     getBPM(void);
+  uint32_t
+    wheel(uint8_t WheelPos);
 
  private:
 

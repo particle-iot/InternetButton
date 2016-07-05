@@ -154,17 +154,16 @@ uint8_t InternetButton::allButtonsOff(){
     }
 }
 
-void InternetButton::wheel(uint8_t i, uint8_t j) {
-    uint8_t WheelPos = ((i * 256 / ring.numPixels()) + j) & 255;
-    if (WheelPos < 85) {
-        ring.setPixelColor(i,ring.Color(WheelPos * 3, 255 - WheelPos * 3, 0));
-    } else if (WheelPos < 170) {
-        WheelPos -= 85;
-        ring.setPixelColor(i,ring.Color(255 - WheelPos * 3, 0, WheelPos * 3));
-    } else {
-        WheelPos -= 170;
-        ring.setPixelColor(i,ring.Color(0, WheelPos * 3, 255 - WheelPos * 3));
-    }
+uint32_t InternetButton::wheel(uint8_t WheelPos) {
+  if(WheelPos < 85) {
+   return ring.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } else if(WheelPos < 170) {
+   WheelPos -= 85;
+   return ring.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else {
+   WheelPos -= 170;
+   return ring.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
 }
 
 void InternetButton::rainbow(uint8_t wait) {
@@ -172,7 +171,8 @@ void InternetButton::rainbow(uint8_t wait) {
 
     for(j=0; j<256; j++) { // 1 cycle of all colors on wheel
         for(i=0; i< 12; i++) {
-            wheel(i, j);
+            uint8_t idx = ((i * 256 / ring.numPixels()) + j) & 255;
+            ring.setPixelColor(i, wheel(idx));
         }
         ring.show();
         delay(wait);
@@ -195,7 +195,8 @@ void InternetButton::kickTheRainbow(uint8_t amount, uint8_t wait) {
     }
 
     for(i=0; i< 12; i++) {
-        wheel(i, j);
+        uint8_t idx = ((i * 256 / ring.numPixels()) + j) & 255;
+        ring.setPixelColor(i, wheel(idx));
     }
     ring.show();
     if (wait > 0) delay(wait);
