@@ -1,7 +1,7 @@
 /*
 Well, this is the big one. It does a LOT of things. You should read the comments,
 read in between the comments, and generally play around. I highly recommend
-downloading Particle Dev from http://particle.io/dev because Dev makes it easy
+downloading Particle Dev from https://www.particle.io/dev because Dev makes it easy
 to run functions. Check out the "Cloud Functions" view under the Particle menu.
 */
 
