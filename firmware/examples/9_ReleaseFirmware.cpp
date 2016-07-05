@@ -22,6 +22,8 @@ float ledDesired = 3;
 uint8_t ledPosAchieved = 0;
 
 // Prototypes of the functions that we'll use
+int playTune(String command);
+void ledControl(int ledn);
 int rainbowRemote(String command);
 int ledOnRemote(String command);
 int ledOffRemote(String command);
@@ -33,34 +35,42 @@ int playSong(String command);
 void setup() {
     // Starting InternetButton b
     b.begin();
-    
+    // Get brightness
+    uint8_t bright = b.getBrightness();
+    // Set brightness
+    b.setBrightness(bright); // 0 - 255 (default = 255)
+    // Get BPM
+    int bpm = b.getBPM(); // default is 250
+    // Set BPM
+    b.setBPM(bpm);
+
     // Registering a whole bunch of useful functions
-    
+
     // Turn an LED on using the format "LED_NUMBER,RED_INT,GREEN_INT,BLUE_INT"
     Particle.function("ledOn", ledOnRemote);
-    
+
     // Turn an LED off, format is "LED_NUMBER"
     Particle.function("ledOff", ledOffRemote);
-    
+
     // Turn all the LEDs on, format is "RED_INT,GREEN_INT,BLUE_INT"
     Particle.function("allLedsOn", ledAllOnRemote);
-    
+
     // Turn all the LEDs off. Doesn't take any arguments. Or any of your lip.
     Particle.function("allLedsOff", ledAllOffRemote);
-    
+
     // Woooo rainbows! Just tell it how many seconds.
     Particle.function("rainbow", rainbowRemote);
-    
+
     // Gauge display- animates a value, just send it a number 1-66
     Particle.function("gauge",gaugeRemote);
-    
+
     /* Takes in a string of the format "NOTE,DURATION,NOTE,DURATION..."
        For example "C4,8,D4,4" will play a middle C 1/8th note, then a middle D 1/4 note
        and "E5,8,G5,8,E6,8,C6,8,D6,8,G6,8" will play a familiar tune */
     Particle.function("play",playTune);
 }
 
-/* loop(), in contrast to setup(), runs all the time. Over and over again. 
+/* loop(), in contrast to setup(), runs all the time. Over and over again.
 Remember this particularly if there are things you DON'T want to run a lot. Like Particle.publish() */
 void loop() {
     if(b.allButtonsOn()){
@@ -71,7 +81,7 @@ void loop() {
         }
     }
     else {buttonAll = 0;}
-    
+
     // OK, I'll explain this structure once...
     if(b.buttonOn(1)){                                      // If button1 is on
         if(!button1){                                       // and hasn't already been on
@@ -82,7 +92,7 @@ void loop() {
     }
     else {button1 = 0;}                                     // but if it's not on, we should reset this
                                                             // so we'll know when it comes on again
-    if(b.buttonOn(2)){ 
+    if(b.buttonOn(2)){
         if(!button2){
             button2 = 1;
             Particle.publish("button2",NULL, 60, PRIVATE);
@@ -90,7 +100,7 @@ void loop() {
         }
     }
     else {button2 = 0;}
-    
+
     if(b.buttonOn(3)){
         if(!button3){
             button3 = 1;
@@ -99,7 +109,7 @@ void loop() {
         }
     }
     else {button3 = 0;}
-    
+
     if(b.buttonOn(4)){
         if(!button4){
             button4 = 1;
@@ -108,12 +118,12 @@ void loop() {
         }
     }
     else {button4 = 0;}
-    
+
     // This set of conditionals animates the moving LEDs
     if(abs(ledPos - ledDesired) > .001){
         ledPos = ledPos - (ledPos - ledDesired)/300;
         b.allLedsOff();
-        
+
         // What's this hidden in here? Oh my, a function that takes
         // the position as a float! Smooth positions from 0-12!
         b.smoothLedOn(ledPos, 0, 60, 60);
@@ -121,7 +131,7 @@ void loop() {
     else if(ledPosAchieved == 1){
         b.allLedsOff();
         ledPosAchieved = 2;
-    }                
+    }
     else if(ledPosAchieved != 2){
         ledPosAchieved = 1;
     }
@@ -148,11 +158,13 @@ void ledControl(int ledn){
 int rainbowRemote(String command){
     char inputStr[10];
     command.toCharArray(inputStr,10);
-    int i = atoi(inputStr);
-    long startMillis = millis();
-    while(millis() < startMillis + i*1000){
-        b.rainbow(30);
+    uint32_t i = atoi(inputStr);
+    uint32_t startMillis = millis();
+    while(millis() - startMillis < i*1000UL){
+        b.advanceRainbow(10,30);
+        Particle.process();
     }
+    b.allLedsOff();
     return 1;
 }
 
@@ -161,7 +173,7 @@ int rainbowRemote(String command){
 // with special cases for "LED_NUMBER,red" ... green,blue,white
 int ledOnRemote(String command){
     int i = 0;
-    
+
     char inputStr[20];
     command.toCharArray(inputStr,20);
     char *p = strtok(inputStr,",");
@@ -181,13 +193,13 @@ int ledOnRemote(String command){
     }
     else {
         //parse out CSV colors
-        
+
         uint8_t red = atoi(p);
         p = strtok(NULL,",");
         uint8_t grn = atoi(p);
         p = strtok(NULL,",");
         uint8_t blu = atoi(p);
-        
+
         b.ledOn(i,red,grn,blu);
     }
     return 1;
@@ -220,7 +232,7 @@ int ledAllOnRemote(String command){
         b.allLedsOn(150,150,150);
     }
     else {
-        
+
         char inputStr[20];
         command.toCharArray(inputStr,20);
         char *p = strtok(inputStr,",");
