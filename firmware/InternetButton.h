@@ -74,9 +74,9 @@ class InternetButton {
 //------------- Accelerometer --------------
 
 /**
- * Turn debugging on or off
+ * Uncomment to turn debugging on
  */
-#define ADXL362_DEBUG 0
+// #define ADXL362_DEBUG
 
 /* ADXL Registers */
 

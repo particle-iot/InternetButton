@@ -25,7 +25,8 @@ void InternetButton::begin(){
 
     accelerometer.begin();                   // Setup SPI protocol, issue device soft reset
     accelerometer.beginMeasure();            // Switch ADXL362 to measure mode
-    accelerometer.checkAllControlRegs();     // Burst Read all Control Registers, to check for proper setup
+    // Uncomment to enable diagnostic info
+    // accelerometer.checkAllControlRegs();     // Burst Read all Control Registers, to check for proper setup
 
     pinMode(b1, INPUT_PULLUP);
     pinMode(b2, INPUT_PULLUP);
@@ -356,7 +357,7 @@ void InternetButton::playNote(String note, int duration) {
     freq = float(256*pow(1.05946,(     12.0*(octave-4)        +noteNum)));
     //          C4^  (2^1/12)^    12 half-steps in an octave      ^how many extra half-steps within that octave, 0 for 'C'
 
-    Serial.printlnf("%-3s o:%-2d f:%-5d d:%d", tempNote.c_str(), octave, int(freq), duration);
+    // Serial.printlnf("%-3s o:%-2d f:%-5d d:%d", tempNote.c_str(), octave, int(freq), duration);
 
     if (octave != -1) tone(D0, int(freq), duration);
     delay(duration);
@@ -434,28 +435,28 @@ void ADXL362::beginMeasure() {
 //IMPORTANT to make it a signed 8-bit int so that the data is interpreted correctly
 int ADXL362::readX(){
   int8_t XDATA = SPIreadOneRegister(0x08);
-//#ifdef ADXL362_DEBUG
-//  Serial.print(  "XDATA = ");
-//  Serial.println(XDATA);
-//#endif
+#ifdef ADXL362_DEBUG
+ Serial.print("XDATA = ");
+ Serial.println(XDATA);
+#endif
   return (int)XDATA;
 }
 
 int ADXL362::readY(){
   int8_t YDATA = SPIreadOneRegister(0x09);
-//#ifdef ADXL362_DEBUG
-//  Serial.print(  "\tYDATA = ");
-//  Serial.println(YDATA);
-//#endif
+#ifdef ADXL362_DEBUG
+ Serial.print("\tYDATA = ");
+ Serial.println(YDATA);
+#endif
   return (int)YDATA;
 }
 
 int ADXL362::readZ(){
   int8_t ZDATA = SPIreadOneRegister(0x0A);
-//#ifdef ADXL362_DEBUG
-//  Serial.print(  "\tZDATA = ");
-//  Serial.println(ZDATA);
-//#endif
+#ifdef ADXL362_DEBUG
+ Serial.print("\tZDATA = ");
+ Serial.println(ZDATA);
+#endif
   return (int)ZDATA;
 }
 
@@ -466,7 +467,7 @@ int ADXL362::readZ(){
 int ADXL362::readX16(){
   int16_t XDATA = SPIreadTwoRegisters(XL362_XDATA_L);
 #ifdef ADXL362_DEBUG
-  Serial.print(  "XDATA = ");
+  Serial.print("XDATA = ");
   Serial.println(XDATA);
 #endif
   return XDATA;
@@ -475,7 +476,7 @@ int ADXL362::readX16(){
 int ADXL362::readY16(){
   int16_t YDATA = SPIreadTwoRegisters(XL362_YDATA_L);
 #ifdef ADXL362_DEBUG
-  Serial.print(  "\tYDATA = ");
+  Serial.print("\tYDATA = ");
   Serial.println(YDATA);
 #endif
   return YDATA;
@@ -484,7 +485,7 @@ int ADXL362::readY16(){
 int ADXL362::readZ16(){
   int16_t ZDATA = SPIreadTwoRegisters(XL362_ZDATA_L);
 #ifdef ADXL362_DEBUG
-  Serial.print(  "\tZDATA = ");
+  Serial.print("\tZDATA = ");
   Serial.println(ZDATA);
 #endif
   return ZDATA;
@@ -494,10 +495,10 @@ int ADXL362::readZ16(){
 //worth knowing that this is an INTERNAL temperature measurement, so doesn't reflect the environment accurately
 int16_t ADXL362::readTemp(){
   int16_t TEMP = SPIreadTwoRegisters(XL362_TEMP_L);
-//#ifdef ADXL362_DEBUG
-//  Serial.print("\tTEMP = ");
-//  Serial.println(TEMP);
-//#endif
+#ifdef ADXL362_DEBUG
+  Serial.print("\tTEMP = ");
+  Serial.println(TEMP);
+#endif
   return TEMP;
 }
 
@@ -521,10 +522,10 @@ void ADXL362::readXYZTData(short &XData, short &YData, short &ZData, float &Temp
   digitalWrite(slaveSelectPin, HIGH);
 
 #ifdef ADXL362_DEBUG
-  Serial.print(  "XDATA = "); Serial.print(XData);
-  Serial.print(  "\tYDATA = "); Serial.print(YData);
-  Serial.print(  "\tZDATA = "); Serial.print(ZData);
-  Serial.println(  "\tTemperature = "); Serial.println(Temperature);
+  Serial.print("XDATA = "); Serial.print(XData);
+  Serial.print("\tYDATA = "); Serial.print(YData);
+  Serial.print("\tZDATA = "); Serial.print(ZData);
+  Serial.println("\tTemperature = "); Serial.println(Temperature);
 #endif
 }
 
@@ -547,9 +548,9 @@ void ADXL362::readXYZmg(int &X, int &Y, int &Z){
   Z = (int)ZData * mgperLSB;
 
 #ifdef ADXL362_DEBUG
-  Serial.print(  "x = "); Serial.print(X);
-  Serial.print(  "\ty = "); Serial.print(Y);
-  Serial.println(  "\tz = "); Serial.print(Z);
+  Serial.print("x = "); Serial.print(X);
+  Serial.print("\ty = "); Serial.print(Y);
+  Serial.println("\tz = "); Serial.print(Z);
 #endif
 }
 
