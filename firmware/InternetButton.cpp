@@ -617,7 +617,7 @@ void ADXL362::setRange(uint8_t Range){
     break;
   }
 
-  temp = temp & 0b00111111 | Range;
+  temp = (temp & 0b00111111) | Range;
   SPIwriteOneRegister(XL362_FILTER_CTL, temp); // Write to XL362_FILTER_CTL
   delay(10);
 
@@ -637,7 +637,7 @@ void ADXL362::setBandwidth(uint8_t BandWidth){
   Serial.print(temp);
 #endif
 
-  temp = temp & 0b11101111 | BandWidth;
+  temp = (temp & 0b11101111) | BandWidth;
   SPIwriteOneRegister(XL362_FILTER_CTL, temp); // Write to XL362_FILTER_CTL
   delay(10);
 
@@ -657,7 +657,7 @@ void ADXL362::setOutputDatarate(uint8_t ODR){
   Serial.print(temp);
 #endif
 
-  temp = temp & 0b11111000 | ODR;
+  temp = (temp & 0b11111000) | ODR;
   SPIwriteOneRegister(XL362_FILTER_CTL, temp); // Write to XL362_FILTER_CTL
   delay(10);
 
@@ -677,7 +677,7 @@ void ADXL362::setNoiseLevel(uint8_t NoiseLevel){
   Serial.print(temp);
 #endif
 
-  temp = temp & 0b11001111  | NoiseLevel;
+  temp = (temp & 0b11001111)  | NoiseLevel;
   SPIwriteOneRegister(XL362_POWER_CTL, temp); // Write to XL362_FILTER_CTL
   delay(10);
 
