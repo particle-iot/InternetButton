@@ -7,7 +7,7 @@ Useful info, like how to access the data from your browser, can be
 found here: https://docs.particle.io/reference/firmware/photon/#particle-function-
 
 The code to control the number of illuminated LEDs is here:
-https://github.com/spark/InternetButton/blob/master/controlKnob.html
+https://github.com/spark/InternetButton/blob/master/docs/controlKnob.html
 Try naming one of your devices "InternetButton" and running controlKnob in your browser or on your phone!
 Note that the Core or Photon *must* be named "InternetButton" because the javascript looks for it.
 */
