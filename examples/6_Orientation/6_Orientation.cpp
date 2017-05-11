@@ -1,5 +1,5 @@
 
-#include "InternetButton/InternetButton.h"
+#include "InternetButton.h"
 #include "math.h"
 
 /* Did you know that the Internet Button can detect if it's moving? It's true!
