@@ -1,4 +1,4 @@
-#include "InternetButton/InternetButton.h"
+#include "InternetButton.h"
 
 /* Here's a nice combination of features that I like to use.
 Note the use of the allButtons function. */

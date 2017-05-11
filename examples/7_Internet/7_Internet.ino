@@ -1,5 +1,5 @@
 
-#include "InternetButton/InternetButton.h"
+#include "InternetButton.h"
 #include "math.h"
 
 /* Let me show you how easy it is to put the Button on the Internet.

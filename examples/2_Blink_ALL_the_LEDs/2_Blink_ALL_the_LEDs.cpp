@@ -1,4 +1,4 @@
-#include "InternetButton/InternetButton.h"
+#include "InternetButton.h"
 
 /* This InternetButton library has some useful functions.
 Here we blink ALL the LEDs instead of just one.*/

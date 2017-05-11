@@ -5,7 +5,7 @@ downloading Particle Dev from https://www.particle.io/dev because Dev makes it e
 to run functions. Check out the "Cloud Functions" view under the Particle menu.
 */
 
-#include "InternetButton/InternetButton.h"
+#include "InternetButton.h"
 #include "math.h"
 
 // Set up lots of global variables that we'll be using

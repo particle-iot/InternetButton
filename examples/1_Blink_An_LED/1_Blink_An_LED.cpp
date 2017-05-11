@@ -1,4 +1,4 @@
-#include "InternetButton/InternetButton.h"
+#include "InternetButton.h"
 
 // Create a Button named b. It will be your friend, and you two will spend lots of time together.
 // You may be wondering about those two slashes and this gray text- they're called comments, and
