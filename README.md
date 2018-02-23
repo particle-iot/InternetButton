@@ -1,5 +1,5 @@
 # Internet Button
-[![Build Status](https://travis-ci.org/spark/InternetButton.svg?branch=master)](https://travis-ci.org/spark/InternetButton)
+[![Build Status](https://travis-ci.org/particle-iot/InternetButton.svg?branch=master)](https://travis-ci.org/particle-iot/InternetButton)
 
 _The Internet Button has a lot of features, but some of these aren't as straightforward to use as simple LEDs and sensors. This library abstracts a lot of the complexity and provides simple functions with broad capability. It wraps modified versions of both Adafruit's Neopixel and AnneM's ADXL362 Arduino libraries, as well as some novel functions._
 
