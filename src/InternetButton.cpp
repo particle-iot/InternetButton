@@ -228,8 +228,8 @@ int InternetButton::readT(){
     return accelerometer.readT();
 }
 
-void InternetButton::readXYZT(int &XData, int &YData, int &ZData, int &TempData){
-    accelerometer.readXYZT(int &XData, int &YData, int &ZData, int &TempData);
+void InternetButton::readXYZT(int &XData, int &YData, int &ZData, int &TData){
+    accelerometer.readXYZT(int &XData, int &YData, int &ZData, int &TData);
 }
 
 int InternetButton::readX16(){
@@ -248,8 +248,8 @@ int InternetButton::readT16(){
     return accelerometer.readT16();
 }
 
-void InternetButton::readXYZT16(int &XData, int &YData, int &ZData, int &TempData){
-    accelerometer.readXYZT16(int &XData, int &YData, int &ZData, int &TempData);
+void InternetButton::readXYZT16(int &XData, int &YData, int &ZData, int &TData){
+    accelerometer.readXYZT16(int &XData, int &YData, int &ZData, int &TData);
 }
 
 //Thanks christophevg!
