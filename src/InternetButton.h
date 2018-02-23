@@ -66,8 +66,8 @@ class InternetButton {
     readT16(void),
     getBPM(void);
   void
-    readXYZT(int &XData, int &YData, int &ZData, int &TempData),
-    readXYZT16(int &XData, int &YData, int &ZData, int &TempData);
+    readXYZT(int &XData, int &YData, int &ZData, int &TData),
+    readXYZT16(int &XData, int &YData, int &ZData, int &TData);
   uint32_t
     wheel(uint8_t WheelPos);
 
