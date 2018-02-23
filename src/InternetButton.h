@@ -16,6 +16,8 @@
  Modified for Spark Core/Button October 2014
  Updated for Particle Photon July 2015
  by jenesaisdiq
+ Updated for Particle InternetButton February 2018 
+ by csylvain
 
  */
 
@@ -57,9 +59,13 @@ class InternetButton {
     readX(void),
     readY(void),
     readZ(void),
+    readT(void),
+    readXYZT(void),
     readX16(void),
     readY16(void),
     readZ16(void),
+    readT16(void),
+    readXYZT16(void),
     getBPM(void);
   uint32_t
     wheel(uint8_t WheelPos);
